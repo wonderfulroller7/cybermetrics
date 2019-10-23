@@ -53,4 +53,6 @@ public class SurveyDataController {
         return ResponseEntity.ok(surveyDataService.getSubindexByDifferenceForEveryMonth(topic));
     }
 
+
+
 }

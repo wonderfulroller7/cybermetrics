@@ -74,6 +74,11 @@ public class SurveyDataService {
     public ArrayList<FieldCountDto> getSurveyCalculationsByMonth(String month, String year) {
 
         ArrayList<FieldCountDto> fieldCountDtos = new ArrayList<FieldCountDto>();
+        if (Integer.parseInt(year) < 2015 || Integer.parseInt(month) < 2) {
+            System.out.println("Month = " + month + " Year = " + year);
+            FieldCountDto dto = null;
+            return fieldCountDtos;
+        }
         try{
             ObjectMapper mapper = new ObjectMapper();
             File resource = new ClassPathResource("data/metric_map.json").getFile();
@@ -133,7 +138,6 @@ public class SurveyDataService {
         TreeMap<String, String> diffrentialMap = new TreeMap<>();
         List<String> dates = new ArrayList<String>();
         dates.addAll(queryMap.keySet());
-        System.out.println(dates);
         for (int loop = 1; loop< dates.size(); loop++ ) {
             double prev = Double.valueOf(queryMap.get(dates.get(loop - 1)));
             double curr = Double.valueOf(queryMap.get(dates.get(loop)));
