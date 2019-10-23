@@ -2,17 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0682e88-0183-4f93-ade7-0b7c47dc0ed6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/nyu/cybermetrics/services/ExcelServiceTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/controllers/SurveyDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/controllers/SurveyDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/entities/SurveyResponseIndexEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/entities/SurveyResponseIndexEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/repositories/SurveyIndexRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/repositories/SurveyIndexRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/repositories/SurveyTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/repositories/SurveyTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/ExcelService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/ExcelService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/SurveyDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/SurveyDataService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application-production.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-production.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/data/August_2019.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/data/August_2019.xlsx" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
