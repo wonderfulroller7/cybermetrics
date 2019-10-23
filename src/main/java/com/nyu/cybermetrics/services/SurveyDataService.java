@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.nyu.cybermetrics.dtos.*;
 import com.nyu.cybermetrics.entities.SurveyResponseEntity;
+import com.nyu.cybermetrics.entities.SurveyResponseIndexEntity;
 import com.nyu.cybermetrics.repositories.SurveyRepository;
 import com.nyu.cybermetrics.repositories.SurveyTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.*;
 
 @Service
 public class SurveyDataService {
@@ -91,4 +92,55 @@ public class SurveyDataService {
         }
         return fieldCountDtos;
     }
+
+    public double getSubIndexByTopicPerMonth(String topic, String month, String year) {
+
+        return surveyTypeRepository.getSubIndexByTopicPerMonth(topic, month, year);
+    }
+
+    public TreeMap<String, String> getSubindexForEveryMonth(String topic) {
+
+        HashMap<Date, Double> map = surveyTypeRepository.getSubindexForEveryMonth(topic);
+        TreeMap<String, String> queryMap = new TreeMap<>();
+        for (Date date: map.keySet()) {
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int year  = localDate.getYear();
+            int month = localDate.getMonthValue();
+            if (month < 10) {
+                queryMap.put(String.valueOf(year) + "-0" + String.valueOf(month), String.valueOf(map.get(date)));
+            } else {
+                queryMap.put(String.valueOf(year) + "-" + String.valueOf(month), String.valueOf(map.get(date)));
+            }
+
+        }
+        return queryMap;
+    }
+
+    public TreeMap<String, String> getSubindexByDifferenceForEveryMonth(String topic) {
+
+        HashMap<Date, Double> map = surveyTypeRepository.getSubindexForEveryMonth(topic);
+        TreeMap<String, String> queryMap = new TreeMap<>();
+        for (Date date: map.keySet()) {
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            int year  = localDate.getYear();
+            int month = localDate.getMonthValue();
+            if (month < 10) {
+                queryMap.put(String.valueOf(year) + "-0" + String.valueOf(month), String.valueOf(map.get(date)));
+            } else {
+                queryMap.put(String.valueOf(year) + "-" + String.valueOf(month), String.valueOf(map.get(date)));
+            }
+        }
+        TreeMap<String, String> diffrentialMap = new TreeMap<>();
+        List<String> dates = new ArrayList<String>();
+        dates.addAll(queryMap.keySet());
+        System.out.println(dates);
+        for (int loop = 1; loop< dates.size(); loop++ ) {
+            double prev = Double.valueOf(queryMap.get(dates.get(loop - 1)));
+            double curr = Double.valueOf(queryMap.get(dates.get(loop)));
+            double differential = ((curr - prev)/prev)*100;
+            diffrentialMap.put(dates.get(loop), String.valueOf(differential));
+        }
+        return diffrentialMap;
+    }
+
 }

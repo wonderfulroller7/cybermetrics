@@ -1,7 +1,10 @@
 package com.nyu.cybermetrics.entities;
 
+import com.nyu.cybermetrics.repositories.SurveyIndexRepository;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 @Entity
 @Table(name = "survey_index_monthly")
@@ -11,36 +14,49 @@ public class SurveyResponseIndexEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Timestamp date;
-    private float insider_threat;
-    private float strategic_rivals;
-    private float activist_hacktivist;
-    private float criminals;
-    private float nation_states;
-    private float web_facing_applications;
-    private float internet_exposed_devices;
-    private float end_points;
-    private float mobile_devices;
-    private float public_infrastructure_or_cloud;
-    private float counterparties;
-    private float autonomous_network_connected_devices;
-    private float vulnerability_to_known_threats;
-    private float vulnerability_to_unknown_threats;
-    private float data_theft;
-    private float data_modification;
-    private float business_disruption;
-    private float false_claims_of_digital_identity;
-    private float media_public_perception;
-    private float personal_risk;
-    private float botnets;
-    private float mass_malware;
-    private float vulnerability;
-    private float phishing_social_engineering;
-    private float customized_to_target;
+    @Transient
+    private double field_queried;
 
-    private boolean calculate;
+    @Transient
+    private Date date_of_field;
+
+    private Timestamp date;
+    private double insider_threat;
+    private double strategic_rivals;
+    private double activist_hacktivist;
+    private double criminals;
+    private double nation_states;
+    private double web_facing_applications;
+    private double internet_exposed_devices;
+    private double end_points;
+    private double mobile_devices;
+    private double public_infrastructure_or_cloud;
+    private double counterparties;
+    private double autonomous_network_connected_devices;
+    private double vulnerability_to_known_threats;
+    private double vulnerability_to_unknown_threats;
+    private double data_theft;
+    private double data_modification;
+    private double business_disruption;
+    private double false_claims_of_digital_identity;
+    private double media_public_perception;
+    private double personal_risk;
+    private double botnets;
+    private double mass_malware;
+    private double vulnerability;
+    private double phishing_social_engineering;
+    private double customized_to_target;
 
     public SurveyResponseIndexEntity() {
+    }
+
+    public SurveyResponseIndexEntity(double field_queried) {
+        this.field_queried = field_queried;
+    }
+
+    public SurveyResponseIndexEntity(double field_queried, Date date) {
+        this.date_of_field = date;
+        this.field_queried = field_queried;
     }
 
     public Long getId() {
@@ -59,212 +75,220 @@ public class SurveyResponseIndexEntity {
         this.date = date;
     }
 
-    public float getInsider_threat() {
+    public double getInsider_threat() {
         return insider_threat;
     }
 
-    public void setInsider_threat(float insider_threat) {
+    public void setInsider_threat(double insider_threat) {
         this.insider_threat = insider_threat;
     }
 
-    public float getStrategic_rivals() {
+    public double getStrategic_rivals() {
         return strategic_rivals;
     }
 
-    public void setStrategic_rivals(float strategic_rivals) {
+    public void setStrategic_rivals(double strategic_rivals) {
         this.strategic_rivals = strategic_rivals;
     }
 
-    public float getActivist_hacktivist() {
+    public double getActivist_hacktivist() {
         return activist_hacktivist;
     }
 
-    public void setActivist_hacktivist(float activist_hacktivist) {
+    public void setActivist_hacktivist(double activist_hacktivist) {
         this.activist_hacktivist = activist_hacktivist;
     }
 
-    public float getCriminals() {
+    public double getCriminals() {
         return criminals;
     }
 
-    public void setCriminals(float criminals) {
+    public void setCriminals(double criminals) {
         this.criminals = criminals;
     }
 
-    public float getNation_states() {
+    public double getNation_states() {
         return nation_states;
     }
 
-    public void setNation_states(float nation_states) {
+    public void setNation_states(double nation_states) {
         this.nation_states = nation_states;
     }
 
-    public float getWeb_facing_applications() {
+    public double getWeb_facing_applications() {
         return web_facing_applications;
     }
 
-    public void setWeb_facing_applications(float web_facing_applications) {
+    public void setWeb_facing_applications(double web_facing_applications) {
         this.web_facing_applications = web_facing_applications;
     }
 
-    public float getInternet_exposed_devices() {
+    public double getInternet_exposed_devices() {
         return internet_exposed_devices;
     }
 
-    public void setInternet_exposed_devices(float internet_exposed_devices) {
+    public void setInternet_exposed_devices(double internet_exposed_devices) {
         this.internet_exposed_devices = internet_exposed_devices;
     }
 
-    public float getEnd_points() {
+    public double getEnd_points() {
         return end_points;
     }
 
-    public void setEnd_points(float end_points) {
+    public void setEnd_points(double end_points) {
         this.end_points = end_points;
     }
 
-    public float getMobile_devices() {
+    public double getMobile_devices() {
         return mobile_devices;
     }
 
-    public void setMobile_devices(float mobile_devices) {
+    public void setMobile_devices(double mobile_devices) {
         this.mobile_devices = mobile_devices;
     }
 
-    public float getPublic_infrastructure_or_cloud() {
+    public double getPublic_infrastructure_or_cloud() {
         return public_infrastructure_or_cloud;
     }
 
-    public void setPublic_infrastructure_or_cloud(float public_infrastructure_or_cloud) {
+    public void setPublic_infrastructure_or_cloud(double public_infrastructure_or_cloud) {
         this.public_infrastructure_or_cloud = public_infrastructure_or_cloud;
     }
 
-    public float getCounterparties() {
+    public double getCounterparties() {
         return counterparties;
     }
 
-    public void setCounterparties(float counterparties) {
+    public void setCounterparties(double counterparties) {
         this.counterparties = counterparties;
     }
 
-    public float getAutonomous_network_connected_devices() {
+    public double getAutonomous_network_connected_devices() {
         return autonomous_network_connected_devices;
     }
 
-    public void setAutonomous_network_connected_devices(float autonomous_network_connected_devices) {
+    public void setAutonomous_network_connected_devices(double autonomous_network_connected_devices) {
         this.autonomous_network_connected_devices = autonomous_network_connected_devices;
     }
 
-    public float getVulnerability_to_known_threats() {
+    public double getVulnerability_to_known_threats() {
         return vulnerability_to_known_threats;
     }
 
-    public void setVulnerability_to_known_threats(float vulnerability_to_known_threats) {
+    public void setVulnerability_to_known_threats(double vulnerability_to_known_threats) {
         this.vulnerability_to_known_threats = vulnerability_to_known_threats;
     }
 
-    public float getVulnerability_to_unknown_threats() {
+    public double getVulnerability_to_unknown_threats() {
         return vulnerability_to_unknown_threats;
     }
 
-    public void setVulnerability_to_unknown_threats(float vulnerability_to_unknown_threats) {
+    public void setVulnerability_to_unknown_threats(double vulnerability_to_unknown_threats) {
         this.vulnerability_to_unknown_threats = vulnerability_to_unknown_threats;
     }
 
-    public float getData_theft() {
+    public double getData_theft() {
         return data_theft;
     }
 
-    public void setData_theft(float data_theft) {
+    public void setData_theft(double data_theft) {
         this.data_theft = data_theft;
     }
 
-    public float getData_modification() {
+    public double getData_modification() {
         return data_modification;
     }
 
-    public void setData_modification(float data_modification) {
+    public void setData_modification(double data_modification) {
         this.data_modification = data_modification;
     }
 
-    public float getBusiness_disruption() {
+    public double getBusiness_disruption() {
         return business_disruption;
     }
 
-    public void setBusiness_disruption(float business_disruption) {
+    public void setBusiness_disruption(double business_disruption) {
         this.business_disruption = business_disruption;
     }
 
-    public float getFalse_claims_of_digital_identity() {
+    public double getFalse_claims_of_digital_identity() {
         return false_claims_of_digital_identity;
     }
 
-    public void setFalse_claims_of_digital_identity(float false_claims_of_digital_identity) {
+    public void setFalse_claims_of_digital_identity(double false_claims_of_digital_identity) {
         this.false_claims_of_digital_identity = false_claims_of_digital_identity;
     }
 
-    public float getMedia_public_perception() {
+    public double getMedia_public_perception() {
         return media_public_perception;
     }
 
-    public void setMedia_public_perception(float media_public_perception) {
+    public void setMedia_public_perception(double media_public_perception) {
         this.media_public_perception = media_public_perception;
     }
 
-    public float getPersonal_risk() {
+    public double getPersonal_risk() {
         return personal_risk;
     }
 
-    public void setPersonal_risk(float personal_risk) {
+    public void setPersonal_risk(double personal_risk) {
         this.personal_risk = personal_risk;
     }
 
-    public float getBotnets() {
+    public double getBotnets() {
         return botnets;
     }
 
-    public void setBotnets(float botnets) {
+    public void setBotnets(double botnets) {
         this.botnets = botnets;
     }
 
-    public float getMass_malware() {
+    public double getMass_malware() {
         return mass_malware;
     }
 
-    public void setMass_malware(float mass_malware) {
+    public void setMass_malware(double mass_malware) {
         this.mass_malware = mass_malware;
     }
 
-    public float getVulnerability() {
+    public double getVulnerability() {
         return vulnerability;
     }
 
-    public void setVulnerability(float vulnerability) {
+    public void setVulnerability(double vulnerability) {
         this.vulnerability = vulnerability;
     }
 
-    public float getPhishing_social_engineering() {
+    public double getPhishing_social_engineering() {
         return phishing_social_engineering;
     }
 
-    public void setPhishing_social_engineering(float phishing_social_engineering) {
+    public void setPhishing_social_engineering(double phishing_social_engineering) {
         this.phishing_social_engineering = phishing_social_engineering;
     }
 
-    public float getCustomized_to_target() {
+    public double getCustomized_to_target() {
         return customized_to_target;
     }
 
-    public void setCustomized_to_target(float customized_to_target) {
+    public void setCustomized_to_target(double customized_to_target) {
         this.customized_to_target = customized_to_target;
     }
 
-    public boolean isCalculate() {
-        return calculate;
+    public double getField() {
+        return field_queried;
     }
 
-    public void setCalculate(boolean calculate) {
-        this.calculate = calculate;
+    public void setField(double field) {
+        this.field_queried = field;
+    }
+
+    public Date getDate_of_field() {
+        return date_of_field;
+    }
+
+    public void setDate_of_field(Date date_of_field) {
+        this.date_of_field = date_of_field;
     }
 
     @Override
@@ -297,7 +321,6 @@ public class SurveyResponseIndexEntity {
                 ", vulnerability=" + vulnerability +
                 ", phishing_social_engineering=" + phishing_social_engineering +
                 ", customized_to_target=" + customized_to_target +
-                ", calculate=" + calculate +
                 '}';
     }
 }

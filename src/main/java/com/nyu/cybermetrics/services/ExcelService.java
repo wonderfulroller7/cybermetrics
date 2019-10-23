@@ -2,6 +2,8 @@ package com.nyu.cybermetrics.services;
 
 import com.nyu.cybermetrics.dtos.*;
 import com.nyu.cybermetrics.entities.SurveyResponseEntity;
+import com.nyu.cybermetrics.entities.SurveyResponseIndexEntity;
+import com.nyu.cybermetrics.repositories.SurveyIndexRepository;
 import com.nyu.cybermetrics.repositories.SurveyRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -19,6 +22,9 @@ public class ExcelService {
 
     @Autowired
     private SurveyRepository surveyRepository;
+
+    @Autowired
+    private SurveyIndexRepository surveyIndexRepository;
 
     public ArrayList<String> getSheets() {
 
@@ -108,13 +114,77 @@ public class ExcelService {
     }
 
     // Index_CALCULATION Sheet
-    private void indexCalculation() {
+    public ArrayList<SurveyResponseIndexEntity> indexCalculation() {
 
         Workbook wb = getWorkBook();
         Sheet sheet = wb.getSheet("Index_CALCULATION");
-        int rows = sheet.getLastRowNum();
-        int last_column = sheet.getRow(0).getLastCellNum();
-
+        int first_row = 15;
+        int start_column = 16;
+        Row date_row = sheet.getRow(14);
+        ArrayList<SurveyResponseIndexEntity> indexes = new ArrayList<SurveyResponseIndexEntity>();
+        while(null != getCell(date_row,start_column)) {
+            Date date = date_row.getCell(start_column).getDateCellValue();
+//            Calendar cal = Calendar.getInstance();
+//            cal.setTime(date);
+            int loop = first_row;
+            System.out.println(date.toString());
+            SurveyResponseIndexEntity entity = new SurveyResponseIndexEntity();
+            entity.setDate(new Timestamp(date.getTime()));
+            Row row = sheet.getRow(loop++);
+            entity.setInsider_threat(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setStrategic_rivals(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setActivist_hacktivist(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setCriminals(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setNation_states(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setBotnets(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setMass_malware(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setVulnerability(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setPhishing_social_engineering(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setCustomized_to_target(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setData_theft(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setData_modification(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setBusiness_disruption(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setWeb_facing_applications(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setInternet_exposed_devices(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setEnd_points(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setMobile_devices(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setPublic_infrastructure_or_cloud(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setCounterparties(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setAutonomous_network_connected_devices(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setVulnerability_to_known_threats(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setVulnerability_to_unknown_threats(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setFalse_claims_of_digital_identity(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setMedia_public_perception(getCell(row, start_column).getNumericCellValue());
+            row = sheet.getRow(loop++);
+            entity.setPersonal_risk(getCell(row, start_column).getNumericCellValue());
+            surveyIndexRepository.save(entity);
+            indexes.add(entity);
+            start_column++;
+        }
+        return indexes;
     }
 
     // alpha-beta Sheet

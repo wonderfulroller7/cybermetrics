@@ -30,13 +30,27 @@ public class SurveyDataController {
         return ResponseEntity.ok(surveyDataService.getSurveyCalculationsByMonth(month, year));
     }
 
-    @RequestMapping(value="/api/getSurveyDataByMonth/{year}/{month}", method = RequestMethod.GET)
+    @RequestMapping(value="/api/getSubIndex/{topic}/{month}/{year}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<?> get(@PathVariable("month") String month, @PathVariable("year") String year) {
+    public ResponseEntity<?> getSubIndexByTopicPerMonth(@PathVariable("topic") String topic,
+                                                        @PathVariable("month") String month,
+                                                        @PathVariable("year") String year) {
 
-        return ResponseEntity.ok(surveyDataService.getSurveyCalculationsByMonth(month, year));
+        return ResponseEntity.ok(surveyDataService.getSubIndexByTopicPerMonth(topic, month, year));
     }
 
+    @RequestMapping(value="/api/getSubIndex/{topic}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getSubindexByTopicForEveryMonth(@PathVariable("topic") String topic) {
 
+        return ResponseEntity.ok(surveyDataService.getSubindexForEveryMonth(topic));
+    }
+
+    @RequestMapping(value="/api/getSubIndexDifference/{topic}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getSubindexByDifferenceForEveryMonth(@PathVariable("topic") String topic) {
+
+        return ResponseEntity.ok(surveyDataService.getSubindexByDifferenceForEveryMonth(topic));
+    }
 
 }
