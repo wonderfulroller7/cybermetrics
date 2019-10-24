@@ -53,6 +53,13 @@ public class SurveyDataController {
         return ResponseEntity.ok(surveyDataService.getSubindexByDifferenceForEveryMonth(topic));
     }
 
+    @RequestMapping(value="/api/getSubIndexDifference/{topic}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> getHighest(@PathVariable("topic") String topic) {
+
+        return ResponseEntity.ok(surveyDataService.getSubindexByDifferenceForEveryMonth(topic));
+    }
+
 
 
 }

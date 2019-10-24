@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f0682e88-0183-4f93-ade7-0b7c47dc0ed6" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/buildspec.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/controllers/SurveyDataController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/controllers/SurveyDataController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/SurveyDataService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/nyu/cybermetrics/services/SurveyDataService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application-production.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application-production.properties" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -161,7 +158,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>
