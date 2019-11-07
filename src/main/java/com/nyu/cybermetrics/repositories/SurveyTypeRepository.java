@@ -1,5 +1,6 @@
 package com.nyu.cybermetrics.repositories;
 
+import com.nyu.cybermetrics.entities.CVEEntity;
 import com.nyu.cybermetrics.entities.SurveyResponseEntity;
 import com.nyu.cybermetrics.entities.SurveyResponseIndexEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,5 +75,24 @@ public class SurveyTypeRepository {
             e.printStackTrace();
         }
         return subIndexByMonth;
+    }
+
+    public List<CVEEntity> getCVESWithFilterPerMonthPerYear(String month, String year) {
+
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<CVEEntity> cq = cb.createQuery(CVEEntity.class);
+
+        Root<CVEEntity> cveLinks = cq.from(CVEEntity.class);
+        Predicate monthPredicate = cb.equal(cb.function("MONTH", Integer.class, cveLinks.get("published_date")), month);
+        Predicate yearPredicate = cb.equal(cb.function("YEAR", Integer.class, cveLinks.get("published_date")), year);
+        cq.where(monthPredicate, yearPredicate);
+        //cq.select(cb.construct(CVEEntity.class, cveLinks.get("cveid")));
+        try{
+            TypedQuery<CVEEntity> query = em.createQuery(cq);
+            return query.getResultList();
+        } catch(Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
