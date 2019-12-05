@@ -115,7 +115,7 @@ public class SurveyDataService {
 
     public TreeMap<String, String> getSubindexForEveryMonth(String topic) {
 
-        HashMap<Date, Double> map = surveyTypeRepository.getSubindexForEveryMonth(topic);
+        HashMap<Date, Double> map = surveyTypeRepository.getSubIndexForEveryMonth(topic);
         TreeMap<String, String> queryMap = new TreeMap<>();
         for (Date date: map.keySet()) {
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -133,7 +133,7 @@ public class SurveyDataService {
 
     public TreeMap<String, String> getSubindexByDifferenceForEveryMonth(String topic) {
 
-        HashMap<Date, Double> map = surveyTypeRepository.getSubindexForEveryMonth(topic);
+        HashMap<Date, Double> map = surveyTypeRepository.getSubIndexForEveryMonth(topic);
 
         TreeMap<String, String> queryMap = new TreeMap<>();
         for (Date date : map.keySet()) {
@@ -175,6 +175,9 @@ public class SurveyDataService {
             String formattedDate = new SimpleDateFormat("MMM-yyyy").format(temp);
             dates_list.add(formattedDate);
         }
+        String temp = dates_list.get(0);
+        dates_list.set(0, dates_list.get(2));
+        dates_list.set(2, temp);
         return dates_list;
     }
 
@@ -188,6 +191,9 @@ public class SurveyDataService {
             String formattedDate = new SimpleDateFormat("MM yyyy").format(temp);
             dates_list.add(formattedDate);
         }
+        String temp = dates_list.get(0);
+        dates_list.set(0, dates_list.get(2));
+        dates_list.set(2, temp);
         return dates_list;
     }
 
@@ -241,6 +247,64 @@ public class SurveyDataService {
         return objects;
     }
 
+    public ArrayList<ChartDto> chartMapAgainstExploitScoreCVE(String choice) {
+
+        String[] topics = {"activist_hacktivist", "criminals","nation_states",
+                "web_facing_applications","internet_exposed_devices","end_points",
+                "mobile_devices","public_infrastructure_or_cloud","counterparties",
+                "autonomous_network_connected_devices","vulnerability_to_known_threats",
+                "vulnerability_to_unknown_threats","data_theft","data_modification",
+                "business_disruption","false_claims_of_digital_identity","media_public_perception",
+                "personal_risk","botnets","mass_malware","vulnerability",
+                "phishing_social_engineering","customized_to_target"
+        };
+        ArrayList<ChartDto> objects = new ArrayList<ChartDto>();
+        if (choice.equalsIgnoreCase("all")) {
+            for (String topic: topics) {
+                ChartDto temp = new ChartDto();
+                temp.setLabel(topic);
+                TreeMap<String, String> tempList = getSubindexForEveryMonth(topic);
+                for (String val: tempList.keySet()) {
+                    String key_value = tempList.get(val);
+                    if (key_value.equalsIgnoreCase("0.0"))
+                        key_value = "1000.0";
+                    temp.getData().add(Double.valueOf(key_value));
+                }
+                objects.add(temp);
+            }
+        } else {
+            ChartDto temp = new ChartDto();
+            temp.setLabel(choice);
+            TreeMap<String, String> tempList = getSubindexForEveryMonth(choice);
+            for (String val: tempList.keySet()) {
+                String key_value = tempList.get(val);
+                if (key_value.equalsIgnoreCase("0.0"))
+                    key_value = "1000.0";
+                temp.getData().add(Double.valueOf(key_value));
+            }
+            objects.add(temp);
+        }
+        List<String> monthYearList = getChartLabelsMonthYear();
+        ChartDto cve_data = new ChartDto();
+        for (String date: monthYearList) {
+            String[] temp = date.split(" ");
+            List<CVEEntity> cveEntities = getCVEDataPerMonthAndYear(temp[0], temp[1]);
+            double score = 0f;
+            for (CVEEntity single: cveEntities) {
+                if (single.getV2_exploitability_score() == 0)
+                    score += single.getV3_exploitability_score();
+                else
+                    score += single.getV2_exploitability_score();
+            }
+            cve_data.getData().add(score);
+        }
+        cve_data.setLabel("CVE Exploitable Score");
+        cve_data.setyAxisID("B");
+        objects.add(cve_data);
+        return objects;
+    }
+
+    // Get Current Index
     public ArrayList<ChartDto> getIndexValue() {
         ArrayList<ChartDto> objects = new ArrayList<ChartDto>();
         String[] topics = {"activist_hacktivist", "criminals","nation_states",
@@ -252,7 +316,22 @@ public class SurveyDataService {
                 "personal_risk","botnets","mass_malware","vulnerability",
                 "phishing_social_engineering","customized_to_target"
         };
-//        CVSS.Weight = {
+        String[] values = {"RISEN", "RISEN_FAST", "FALLEN", "FALLEN_FAST", "STATIC"};
+        List<String> chartLabelMonthYear = getChartLabelsMonthYear();
+        for (String date: chartLabelMonthYear) {
+            String[] temp = date.split(" ");
+            for (String topic: topics) {
+                for (String value: values) {
+                    long value_count = surveyTypeRepository.findCount(topic, value, temp[0], temp[1]);
+                    System.out.println(topic + ":" + value + ":" +date + ":" + value_count);
+                }
+            }
+        }
+
+        return objects;
+    }
+
+    //        CVSS.Weight = {
 //        AV:   { N: 0.85,  A: 0.62,  L: 0.55,  P: 0.2},
 //        AC:   { H: 0.44,  L: 0.77},
 //        PR:   { U:       {N: 0.85,  L: 0.62,  H: 0.27},         // These values are used if Scope is Unchanged
@@ -268,20 +347,5 @@ public class SurveyDataService {
 //
 //        CIAR: { X: 1,     L: 0.5,   M: 1,     H: 1.5}           // CR, IR and AR have the same weights
 //        };
-
-        String[] values = {"RISEN", "RISEN_FAST", "FALLEN", "FALLEN_FAST", "STATIC"};
-        List<String> chartLabelMonthYear = getChartLabelsMonthYear();
-        for (String date: chartLabelMonthYear) {
-            String[] temp = date.split(" ");
-            for (String topic: topics) {
-                for (String value: values) {
-                    long value_count = surveyTypeRepository.findCount(topic, value, temp[0], temp[1]);
-                    System.out.println(topic + ":" + value + ":" +date + ":" + value_count);
-                }
-            }
-        }
-
-        return objects;
-    }
 
 }

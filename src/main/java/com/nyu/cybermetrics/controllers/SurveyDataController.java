@@ -75,6 +75,14 @@ public class SurveyDataController {
     }
 
     @CrossOrigin(origins = {"http://localhost:4200"})
+    @RequestMapping(value="/api/chartAllDataExploit/{choice}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<?> chartAllDataExploit(@PathVariable("choice") String choice) {
+
+        return ResponseEntity.ok(surveyDataService.chartMapAgainstExploitScoreCVE(choice));
+    }
+
+    @CrossOrigin(origins = {"http://localhost:4200"})
     @RequestMapping(value="/api/getChartLabels", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<?> getAllChartLabels() {
